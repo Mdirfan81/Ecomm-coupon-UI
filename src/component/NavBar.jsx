@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -18,20 +18,26 @@ import {
   DrawerCloseButton,
   Stack,
   Image,
-  Badge,
 } from "@chakra-ui/react";
+import { useDispatch, useSelector } from "react-redux";
 
 import e from "../assets/e-c.jpg";
 import { CiShoppingCart } from "react-icons/ci";
+import { fetchCardItem, getCard } from "../features/products/productSlice";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const btnRef = useRef();
+  const [orderCount, setOrderCount] = useState(0);
 
-  const isDesktop = useBreakpointValue({
-    base: false,
-    lg: true,
-  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const btnRef = useRef();
+  const dispatch = useDispatch();
+  const baskitItem = useSelector(getCard);
+
+  // useEffect(() => {
+  //   dispatch(fetchCardItem());
+  // }, [dispatch]);
   return (
     <Box as="section">
       <Box boxShadow="sm">
@@ -42,12 +48,22 @@ const NavBar = () => {
           }}
         >
           <Flex align="center" justify="space-between" mx={5}>
-            <Image src={e} w="40px" alt="Logo" rounded="lg" />
+            <Link to="/">
+              <Image src={e} w="40px" alt="Logo" rounded="lg" />
+            </Link>
             <HStack spacing="3">
-              <Button colorScheme="red">
-                <CiShoppingCart size={30} />
-                <span>1</span>
-              </Button>
+              <Link to="/checkout">
+                <Button colorScheme="red">
+                  <CiShoppingCart size={30} />
+                  <span>
+                    {baskitItem
+                      ? baskitItem.length > 0
+                        ? baskitItem.length
+                        : ""
+                      : ""}
+                  </span>
+                </Button>
+              </Link>
               <Button
                 variant="ghost"
                 ref={btnRef}

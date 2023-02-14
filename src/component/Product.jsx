@@ -1,28 +1,50 @@
 import React from "react";
-import { Box, Image, Flex, Button, Text, Badge } from "@chakra-ui/react";
-const Product = () => {
+import {
+  Box,
+  Image,
+  Flex,
+  Button,
+  Text,
+  Badge,
+  useToast,
+} from "@chakra-ui/react";
+import { addCardItem } from "../features/products/productSlice";
+import { useDispatch } from "react-redux";
+import { AiOutlineDelete } from "react-icons/ai";
+
+const Product = ({ product, isAdded, handleItemToCard }) => {
+  // const dispatch = useDispatch();
+  const toast = useToast();
+
+  // const handleItemToCard = (e) => {
+  //   e.preventDefault();
+  //   console.log("Data");
+  //   dispatch(addCardItem(product));
+  // console.log(isAdded);
+  // };
   return (
     <Box
-      w="250px"
+      w="280px"
       h="345px"
       bg="white"
       border="1px"
       borderColor="gray.200"
-      boxShadow="xs"
+      boxShadow="lg"
       rounded="md"
       p={1}
     >
       <Flex justify="center" direction="column">
         <Image
           w="240px"
-          objectFit="cover"
-          src="https://bit.ly/dan-abramov"
-          alt="TV"
+          h="240px"
+          // objectFit="cover"
+          src={product.image}
+          alt={product.title}
           borderRadius="lg"
         />
         <Box h={50} style={{ overflow: "hidden" }}>
-          <Text fontSize="md" fontWeight="bold" fontFamily="Raleway">
-            Mens Casual Premium Slim Fit T-Shirts
+          <Text fontSize="md" fontWeight="bold" fontFamily="Raleway" mx={2}>
+            {product.title}
           </Text>
         </Box>
         <div>
@@ -33,10 +55,33 @@ const Product = () => {
               fontSize="1.6em"
               letterSpacing={0.5}
             >
-              <span>$</span>22.3
+              <span>$</span>
+              {product.price}
             </Badge>
 
-            <Button colorScheme="whatsapp">Add to card</Button>
+            <Button
+              onClick={(e) => {
+                handleItemToCard(e, product, isAdded);
+                if (!isAdded) {
+                  return toast({
+                    title: `Item Added Successfully`,
+                    status: "success",
+                    isClosable: true,
+                    position: "bottom-left",
+                  });
+                } else {
+                  return toast({
+                    title: `Item Removed Successfully`,
+                    status: "success",
+                    isClosable: true,
+                    position: "bottom-left",
+                  });
+                }
+              }}
+              colorScheme={isAdded ? "red" : "whatsapp"}
+            >
+              {isAdded ? <AiOutlineDelete /> : "Add to card"}
+            </Button>
           </Flex>
         </div>
       </Flex>
