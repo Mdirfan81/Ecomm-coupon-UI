@@ -1,29 +1,78 @@
-import React, { useState } from "react";
-import { Box, Image, Flex, Text, Button, Input } from "@chakra-ui/react";
-import { remove, removeCardItem } from "../features/products/productSlice";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from "react";
+import {
+  Box,
+  Image,
+  Flex,
+  Text,
+  Button,
+  Input,
+  useToast,
+  Badge,
+  Center,
+} from "@chakra-ui/react";
 
-const CheckoutProduct = ({ product }) => {
+import {
+  applyCoupon,
+  remove,
+  removeCardItem,
+} from "../features/products/productSlice";
+
+import { useDispatch } from "react-redux";
+import { AiOutlineDelete } from "react-icons/ai";
+import { removeAllState } from "../features/coupon/couponValidate";
+
+const CheckoutProduct = ({ product, coupons }) => {
   const [productCounter, setProductCounter] = useState(1);
   const dispatch = useDispatch();
+  const toast = useToast();
 
-  const incrementCounter = (e) => {
-    e.preventDefault();
-  };
-  const decrementCounter = (e) => {
-    e.preventDefault();
-    if (productCounter <= 0) {
-      console.log("Remove this element");
-      //      dispatch(remove(payload));
-      //   dispatch(removeCardItem(payload));
+  useEffect(() => {
+    if (productCounter < 1) {
+      dispatch(remove(product));
+      dispatch(removeCardItem(product));
     }
-    if (productCounter > 0) {
-      setProductCounter((prev) => prev - 1);
-    }
+  }, [productCounter]);
+
+  // useEffect(() => {
+  //   dispatch(applyCoupon(product, coupon));
+  // }, []);
+
+  // const incrementCounter = (e) => {
+  //   e.preventDefault();
+  //   setProductCounter((prev) => prev + 1);
+  //   // dispatch(updateItemQuantity(product, productCounter));
+  // };
+  // const decrementCounter = (e) => {
+  //   e.preventDefault();
+
+  //   if (productCounter > 0) {
+  //     setProductCounter((prev) => prev - 1);
+  //     // dispatch(updateItemQuantity(product, productCounter));
+  //   }
+  // };
+  const handleDelete = (e) => {
+    e.preventDefault();
+    dispatch(remove(product));
+    dispatch(removeCardItem(product));
+    dispatch(removeAllState());
+
+    toast({
+      title: `Item Removed Successfully`,
+      status: "success",
+      isClosable: true,
+      position: "bottom-left",
+    });
   };
   return (
-    <Box w="52rem" border="1px" borderColor="gray.200" borderRadius="2xl" p={2}>
-      <Flex gap="20px">
+    <Box
+      w={["md", "1xl", "52rem"]}
+      border="1px"
+      borderColor="gray.200"
+      borderRadius="2xl"
+      p={2}
+      // display={{ md: "flex" }}
+    >
+      <Flex gap="20px" display={{ md: "flex" }}>
         <Box>
           <Image
             src={product.image}
@@ -40,27 +89,7 @@ const CheckoutProduct = ({ product }) => {
               {product.title}
             </Text>
           </Box>
-          <Box>
-            <Flex gap="3px">
-              <Button
-                colorScheme="teal"
-                variant="ghost"
-                _hover={{ bg: "red", color: "white" }}
-                onClick={decrementCounter}
-              >
-                -
-              </Button>
-              <Input width="60px" value={productCounter} />
-              <Button
-                colorScheme="teal"
-                variant="ghost"
-                _hover={{ bg: "green", color: "white" }}
-                onClick={incrementCounter}
-              >
-                +
-              </Button>
-            </Flex>
-          </Box>
+
           <Box>
             <Text
               color="red"
@@ -74,8 +103,36 @@ const CheckoutProduct = ({ product }) => {
           </Box>
         </Flex>
       </Flex>
+      <Flex justify="end" gap="10px">
+        <Center></Center>
+        <Button colorScheme="red" onClick={handleDelete}>
+          <AiOutlineDelete />
+        </Button>
+      </Flex>
     </Box>
   );
 };
 
 export default CheckoutProduct;
+
+//  <Box>
+//    <Flex gap="3px">
+//      <Button
+//        colorScheme="teal"
+//        variant="ghost"
+//        _hover={{ bg: "red", color: "white" }}
+//        onClick={decrementCounter}
+//      >
+//        -
+//      </Button>
+//      <Input width="60px" value={productCounter} />
+//      <Button
+//        colorScheme="teal"
+//        variant="ghost"
+//        _hover={{ bg: "green", color: "white" }}
+//        onClick={incrementCounter}
+//      >
+//        +
+//      </Button>
+//    </Flex>
+//  </Box>;

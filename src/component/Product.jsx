@@ -11,6 +11,7 @@ import {
 import { addCardItem } from "../features/products/productSlice";
 import { useDispatch } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
+import { RiCoupon3Line } from "react-icons/ri";
 
 const Product = ({ product, isAdded, handleItemToCard }) => {
   // const dispatch = useDispatch();
@@ -58,7 +59,6 @@ const Product = ({ product, isAdded, handleItemToCard }) => {
               <span>$</span>
               {product.price}
             </Badge>
-
             <Button
               onClick={(e) => {
                 handleItemToCard(e, product, isAdded);
@@ -80,7 +80,7 @@ const Product = ({ product, isAdded, handleItemToCard }) => {
               }}
               colorScheme={isAdded ? "red" : "whatsapp"}
             >
-              {isAdded ? <AiOutlineDelete /> : "Add to card"}
+              {isAdded ? <AiOutlineDelete /> : "Add item"}
             </Button>
           </Flex>
         </div>

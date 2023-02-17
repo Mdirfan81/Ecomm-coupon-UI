@@ -4,7 +4,7 @@ import {
   Button,
   Flex,
   HStack,
-  useBreakpointValue,
+  Text,
   Input,
   InputGroup,
   InputRightElement,
@@ -23,8 +23,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import e from "../assets/e-c.jpg";
 import { CiShoppingCart } from "react-icons/ci";
-import { fetchCardItem, getCard } from "../features/products/productSlice";
-import { Link } from "react-router-dom";
+import { getCard } from "../features/products/productSlice";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  authUser,
+  getUser,
+  getUserStatus,
+  getUserError,
+  removeLocalUser,
+} from "../features/user/userSlice";
+import { emptyData } from "../features/admin/adminSlice";
 
 const NavBar = () => {
   const [orderCount, setOrderCount] = useState(0);
@@ -34,10 +42,15 @@ const NavBar = () => {
   const btnRef = useRef();
   const dispatch = useDispatch();
   const baskitItem = useSelector(getCard);
+  const userDetails = useSelector(getUser);
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   dispatch(fetchCardItem());
-  // }, [dispatch]);
+  const handleSignOut = (e) => {
+    e.preventDefault();
+    dispatch(emptyData());
+    dispatch(removeLocalUser());
+    navigate("/");
+  };
   return (
     <Box as="section">
       <Box boxShadow="sm">
@@ -51,28 +64,40 @@ const NavBar = () => {
             <Link to="/">
               <Image src={e} w="40px" alt="Logo" rounded="lg" />
             </Link>
-            <HStack spacing="3">
-              <Link to="/checkout">
-                <Button colorScheme="red">
-                  <CiShoppingCart size={30} />
-                  <span>
-                    {baskitItem
-                      ? baskitItem.length > 0
-                        ? baskitItem.length
-                        : ""
-                      : ""}
-                  </span>
-                </Button>
-              </Link>
-              <Button
-                variant="ghost"
-                ref={btnRef}
-                colorScheme="teal"
-                onClick={onOpen}
-              >
-                LogIn as Admin
+            {userDetails.admin ? (
+              <Button colorScheme="red" onClick={handleSignOut}>
+                Sign Out
               </Button>
-            </HStack>
+            ) : (
+              <HStack spacing="3">
+                <Link to="/">
+                  <Text fontSize="lg" _hover={{ fontWeight: "bold" }}>
+                    Home
+                  </Text>
+                </Link>
+                <Link to="/checkout">
+                  <Button colorScheme="red">
+                    <CiShoppingCart size={30} />
+                    <span>
+                      {baskitItem
+                        ? baskitItem.length > 0
+                          ? baskitItem.length
+                          : ""
+                        : ""}
+                    </span>
+                  </Button>
+                </Link>
+
+                <Button
+                  variant="ghost"
+                  ref={btnRef}
+                  colorScheme="teal"
+                  onClick={onOpen}
+                >
+                  LogIn as Admin
+                </Button>
+              </HStack>
+            )}
           </Flex>
         </Box>
       </Box>
@@ -92,7 +117,25 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
+  // const [close, setClose] = useState(onClose);
 
+  const userDetails = useSelector(getUser);
+  const status = useSelector(getUserStatus);
+  const userError = useSelector(getUserError);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  // console.log({ status });
+
+  useEffect(() => {
+    console.log(userDetails);
+    if (userDetails.admin) {
+      // console.log("Goooooooooooing ==========>");
+      // setClose(true);
+      onClose();
+      navigate("/admin");
+    }
+  }, [status, userDetails]);
   const handleClick = (e) => {
     e.preventDefault();
     setShow(!show);
@@ -102,13 +145,21 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log(username, password);
+
+    if ((username, password)) {
+      let payload = {
+        username: username,
+        password: password,
+      };
+      dispatch(authUser(payload));
+    }
   };
   return (
     <>
       <Drawer
         isOpen={isOpen}
         placement="right"
-        onClose={onClose}
+        onClose={close}
         finalFocusRef={btnRef}
       >
         <DrawerOverlay />
@@ -147,7 +198,12 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="blue" onClick={handleLogin}>
+            <Button
+              colorScheme="blue"
+              onClick={handleLogin}
+              isLoading={status}
+              loadingText="Please wait"
+            >
               Login
             </Button>
           </DrawerFooter>

@@ -8,7 +8,7 @@ import NavBar from "./component/NavBar";
 import HomePage from "./HomePage";
 import ErrorBoundary from "./component/ErrorBoundary";
 import CheckoutPage from "./component/CheckoutPage";
-
+import AdminPage from "./AdminPage";
 function App() {
   return (
     <React.Fragment>
@@ -17,6 +17,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<HomePage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </Provider>
     </React.Fragment>

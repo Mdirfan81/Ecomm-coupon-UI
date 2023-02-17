@@ -25,6 +25,7 @@ export const fetchCardItem = createAsyncThunk(
     }
   }
 );
+
 export const addCardItem = createAsyncThunk(
   "products/addCardItem",
   async (payload) => {
@@ -44,6 +45,18 @@ export const removeCardItem = createAsyncThunk(
         `${apiUrl}/products/removeItem`,
         payload
       );
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+);
+
+export const removeItems = createAsyncThunk(
+  "products/removeItems",
+  async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/products/remove`);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -71,6 +84,33 @@ const productSlice = createSlice({
       );
       return;
     },
+    updateItemQuantity(state, action, quantity) {
+      state.basket.map((ele) => {
+        if (ele.id === action.payload.id) {
+          ele.quantity = quantity;
+        }
+      });
+      // console.log("Update", state.basket);
+    },
+    applyCoupon(state, action) {
+      console.log("Appling Coupon", action.payload);
+      state.basket.map((ele) => {
+        if (ele.id === action.payload.id) {
+          ele.coupon = action.payload.coupon;
+        }
+      });
+    },
+    addQuantity(state, action) {
+      console.log("Adding Quantity", action.payload);
+      state.basket.map((ele) => {
+        if (ele.id === action.payload.id) {
+          ele.qty = action.payload;
+        }
+      });
+    },
+    emptyBasket(state, action) {
+      state.basket = {};
+    },
   },
   extraReducers: {
     [fetchAllProducts.fulfilled]: (state, { payload }) => {
@@ -89,10 +129,15 @@ const productSlice = createSlice({
       console.log("Removed Item Successfully");
       return { ...state, payload };
     },
+    [removeItems.fulfilled]: (state, { payload }) => {
+      console.log("Empty the Basket Successfully");
+      return { ...state, payload };
+    },
   },
 });
 
-export const { add, remove } = productSlice.actions; //this for actions
+export const { add, remove, updateItemQuantity, applyCoupon, emptyBasket } =
+  productSlice.actions; //this for actions
 export const getAllProducts = (state) => state.products.allProducts;
 export const getCard = (state) => state.products.basket;
 export default productSlice.reducer;
