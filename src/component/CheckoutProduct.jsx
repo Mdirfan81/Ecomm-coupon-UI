@@ -33,23 +33,6 @@ const CheckoutProduct = ({ product, coupons }) => {
     }
   }, [productCounter]);
 
-  // useEffect(() => {
-  //   dispatch(applyCoupon(product, coupon));
-  // }, []);
-
-  // const incrementCounter = (e) => {
-  //   e.preventDefault();
-  //   setProductCounter((prev) => prev + 1);
-  //   // dispatch(updateItemQuantity(product, productCounter));
-  // };
-  // const decrementCounter = (e) => {
-  //   e.preventDefault();
-
-  //   if (productCounter > 0) {
-  //     setProductCounter((prev) => prev - 1);
-  //     // dispatch(updateItemQuantity(product, productCounter));
-  //   }
-  // };
   const handleDelete = (e) => {
     e.preventDefault();
     dispatch(remove(product));
@@ -114,25 +97,3 @@ const CheckoutProduct = ({ product, coupons }) => {
 };
 
 export default CheckoutProduct;
-
-//  <Box>
-//    <Flex gap="3px">
-//      <Button
-//        colorScheme="teal"
-//        variant="ghost"
-//        _hover={{ bg: "red", color: "white" }}
-//        onClick={decrementCounter}
-//      >
-//        -
-//      </Button>
-//      <Input width="60px" value={productCounter} />
-//      <Button
-//        colorScheme="teal"
-//        variant="ghost"
-//        _hover={{ bg: "green", color: "white" }}
-//        onClick={incrementCounter}
-//      >
-//        +
-//      </Button>
-//    </Flex>
-//  </Box>;

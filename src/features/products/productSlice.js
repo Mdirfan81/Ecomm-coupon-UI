@@ -7,7 +7,7 @@ export const fetchAllProducts = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(`${apiUrl}/products/getAllProducts`);
-      console.log("Fetch all product", fetchAllProducts);
+      "Fetch all product", fetchAllProducts;
       return response.data;
     } catch (err) {
       console.error(err);
@@ -21,7 +21,7 @@ export const fetchCardItem = createAsyncThunk(
       const response = await axios.get(`${apiUrl}/products/getCard`);
       return response.data;
     } catch (err) {
-      console.log(err);
+      err;
     }
   }
 );
@@ -33,7 +33,7 @@ export const addCardItem = createAsyncThunk(
       const response = await axios.post(`${apiUrl}/products/addItem`, payload);
       return response.data;
     } catch (err) {
-      console.log(err);
+      err;
     }
   }
 );
@@ -47,7 +47,7 @@ export const removeCardItem = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      console.log(err);
+      err;
     }
   }
 );
@@ -59,7 +59,7 @@ export const removeItems = createAsyncThunk(
       const response = await axios.get(`${apiUrl}/products/remove`);
       return response.data;
     } catch (err) {
-      console.log(err);
+      err;
     }
   }
 );
@@ -74,11 +74,11 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     add(state, action) {
-      console.log("ADD=>", action.payload);
+      "ADD=>", action.payload;
       state.basket.push(action.payload);
     },
     remove(state, action) {
-      console.log("Removing data");
+      ("Removing data");
       state.basket = state.basket.filter(
         (item) => item.id !== action.payload.id
       );
@@ -90,10 +90,10 @@ const productSlice = createSlice({
           ele.quantity = quantity;
         }
       });
-      // console.log("Update", state.basket);
+      // ("Update", state.basket);
     },
     applyCoupon(state, action) {
-      console.log("Appling Coupon", action.payload);
+      "Appling Coupon", action.payload;
       state.basket.map((ele) => {
         if (ele.id === action.payload.id) {
           ele.coupon = action.payload.coupon;
@@ -101,7 +101,7 @@ const productSlice = createSlice({
       });
     },
     addQuantity(state, action) {
-      console.log("Adding Quantity", action.payload);
+      "Adding Quantity", action.payload;
       state.basket.map((ele) => {
         if (ele.id === action.payload.id) {
           ele.qty = action.payload;
@@ -114,23 +114,23 @@ const productSlice = createSlice({
   },
   extraReducers: {
     [fetchAllProducts.fulfilled]: (state, { payload }) => {
-      console.log("Fetch all Products Successfully");
+      ("Fetch all Products Successfully");
       return { ...state, allProducts: payload.data };
     },
     [fetchCardItem.fulfilled]: (state, { payload }) => {
-      console.log("Fetch all Baskit Successfully");
+      ("Fetch all Baskit Successfully");
       return { ...state, basket: payload };
     },
     [addCardItem.fulfilled]: (state, { payload }) => {
-      console.log("Added Item Successfully");
+      ("Added Item Successfully");
       return { ...state, payload };
     },
     [removeCardItem.fulfilled]: (state, { payload }) => {
-      console.log("Removed Item Successfully");
+      ("Removed Item Successfully");
       return { ...state, payload };
     },
     [removeItems.fulfilled]: (state, { payload }) => {
-      console.log("Empty the Basket Successfully");
+      ("Empty the Basket Successfully");
       return { ...state, payload };
     },
   },

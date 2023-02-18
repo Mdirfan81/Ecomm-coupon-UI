@@ -6,8 +6,8 @@ export const authUser = createAsyncThunk("users/authUser", async (payload) => {
   try {
     // setTimeout(async () => {
     const response = await axios.post(`${apiUrl}/user/auth`, payload);
-    console.log("Triggering the user API", response);
-    // console.log(response);
+    "Triggering the user API", response;
+    // (response);
     return response.data;
     // }, 2000);
   } catch (err) {
@@ -32,15 +32,15 @@ const userSlice = createSlice({
   },
   extraReducers: {
     [authUser.pending]: (state, { payload }) => {
-      console.log("Auth user Pending");
+      ("Auth user Pending");
       return { ...state, isLoading: true };
     },
     [authUser.fulfilled]: (state, { payload }) => {
-      console.log("Auth user successfully");
+      ("Auth user successfully");
       return { ...state, isLoading: false, userData: payload };
     },
     [authUser.rejected]: (state, { payload }) => {
-      console.log("Auth user Rejected");
+      ("Auth user Rejected");
       return { ...state, isLoading: false, error: payload };
     },
   },

@@ -6,12 +6,12 @@ export const checkCoupon = createAsyncThunk(
   "validCoupons/checkCoupon",
   async (payload) => {
     try {
-      console.log({ payload });
+      ({ payload });
       const response = await axios.get(
         // `${apiUrl}/products/validCoupon/CVHYJDSA`
         `${apiUrl}/products/validCoupon/${payload}`
       );
-      // console.log("Checking for coupon", response.data);
+      // ("Checking for coupon", response.data);
       return response.data;
     } catch (err) {
       console.error(err);
@@ -37,15 +37,15 @@ const couponValidSlice = createSlice({
   },
   extraReducers: {
     [checkCoupon.pending]: (state, { payload }) => {
-      console.log("Valid Coupon Pending");
+      ("Valid Coupon Pending");
       return { ...state, isLoading: true };
     },
     [checkCoupon.fulfilled]: (state, { payload }) => {
-      console.log("Valid Coupon Successfully");
+      ("Valid Coupon Successfully");
       return { ...state, isValid: payload, isLoading: false };
     },
     [checkCoupon.rejected]: (state) => {
-      console.log("Valid Coupon Rejected");
+      ("Valid Coupon Rejected");
       return { ...state, error: true, isLoading: false };
     },
   },

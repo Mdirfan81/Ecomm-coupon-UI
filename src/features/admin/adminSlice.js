@@ -4,9 +4,9 @@ import { apiUrl } from "../../constant/constant";
 
 export const checkout = createAsyncThunk("admin/checkout", async (payload) => {
   try {
-    console.log("Getting checkout", payload);
+    "Getting checkout", payload;
     const response = await axios.post(`${apiUrl}/admin/check`, payload);
-    console.log("Triggering the user API", response);
+    "Triggering the user API", response;
     return response.data;
   } catch (err) {
     console.error(err);
@@ -15,10 +15,10 @@ export const checkout = createAsyncThunk("admin/checkout", async (payload) => {
 
 export const placeOrderDetails = createAsyncThunk(
   "admin/placeOrderDetails",
-  async (payload) => {
+  async () => {
     try {
       const response = await axios.get(`${apiUrl}/admin/check`);
-      console.log("Triggering the user API", response.data);
+      "Triggering the user API", response.data;
       return response.data;
     } catch (err) {
       console.error(err);
@@ -43,28 +43,28 @@ const adminSlice = createSlice({
   },
   extraReducers: {
     [checkout.pending]: (state, { payload }) => {
-      console.log("Checkout  Pending");
+      ("Checkout  Pending");
       return { ...state, isLoading: true };
     },
     [checkout.fulfilled]: (state, { payload }) => {
-      console.log("Checkout  successfully");
+      ("Checkout  successfully");
       return { ...state, isLoading: false, error: false };
     },
     [checkout.rejected]: (state, { payload }) => {
-      console.log("Checkout  Rejected");
+      ("Checkout  Rejected");
       return { ...state, isLoading: false, error: payload };
     },
     //----------------------------------------
     [placeOrderDetails.pending]: (state, { payload }) => {
-      console.log("Checkout fetch Pending");
+      ("Checkout fetch Pending");
       return { ...state, isLoading: true };
     },
     [placeOrderDetails.fulfilled]: (state, { payload }) => {
-      console.log("Checkout fetch successfully");
+      ("Checkout fetch successfully");
       return { ...state, isLoading: false, itemSold: payload };
     },
     [placeOrderDetails.rejected]: (state, { payload }) => {
-      console.log("Checkout fetch Rejected");
+      ("Checkout fetch Rejected");
       return { ...state, isLoading: false, error: false };
     },
   },

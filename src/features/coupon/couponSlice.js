@@ -7,7 +7,7 @@ export const fetchAllCoupons = createAsyncThunk(
   async () => {
     try {
       const response = await axios.get(`${apiUrl}/products/coupons`);
-      // console.log("Fetch all Coupons", response.data.coupons[0]);
+      // ("Fetch all Coupons", response.data.coupons[0]);
       return response.data.coupons[0];
     } catch (err) {
       console.error(err);
@@ -27,15 +27,15 @@ const couponSlice = createSlice({
   reducers: {},
   extraReducers: {
     [fetchAllCoupons.pending]: (state, { payload }) => {
-      console.log("Fetch all Coupons is Pending");
+      ("Fetch all Coupons is Pending");
       return { ...state, isLoading: true };
     },
     [fetchAllCoupons.fulfilled]: (state, { payload }) => {
-      console.log("Fetch all Coupons Successfully", payload);
+      "Fetch all Coupons Successfully", payload;
       return { ...state, allCoupons: payload };
     },
     [fetchAllCoupons.rejected]: (state, { payload }) => {
-      console.log("Got Error in Coupons");
+      ("Got Error in Coupons");
       return { ...state, error: true };
     },
   },

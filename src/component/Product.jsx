@@ -8,21 +8,11 @@ import {
   Badge,
   useToast,
 } from "@chakra-ui/react";
-import { addCardItem } from "../features/products/productSlice";
-import { useDispatch } from "react-redux";
 import { AiOutlineDelete } from "react-icons/ai";
-import { RiCoupon3Line } from "react-icons/ri";
 
 const Product = ({ product, isAdded, handleItemToCard }) => {
-  // const dispatch = useDispatch();
   const toast = useToast();
 
-  // const handleItemToCard = (e) => {
-  //   e.preventDefault();
-  //   console.log("Data");
-  //   dispatch(addCardItem(product));
-  // console.log(isAdded);
-  // };
   return (
     <Box
       w="280px"
@@ -38,7 +28,6 @@ const Product = ({ product, isAdded, handleItemToCard }) => {
         <Image
           w="240px"
           h="240px"
-          // objectFit="cover"
           src={product.image}
           alt={product.title}
           borderRadius="lg"

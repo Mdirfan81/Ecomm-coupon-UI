@@ -18,6 +18,24 @@ import {
   DrawerCloseButton,
   Stack,
   Image,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
+  Table,
+  Thead,
+  Tbody,
+  Tfoot,
+  Tr,
+  Th,
+  Td,
+  TableCaption,
+  TableContainer,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -33,6 +51,7 @@ import {
   removeLocalUser,
 } from "../features/user/userSlice";
 import { emptyData } from "../features/admin/adminSlice";
+import { fetchAllCoupons, getAllCoupons } from "../features/coupon/couponSlice";
 
 const NavBar = () => {
   const [orderCount, setOrderCount] = useState(0);
@@ -43,6 +62,7 @@ const NavBar = () => {
   const dispatch = useDispatch();
   const baskitItem = useSelector(getCard);
   const userDetails = useSelector(getUser);
+  const allCoupons = useSelector(getAllCoupons);
   const navigate = useNavigate();
 
   const handleSignOut = (e) => {
@@ -51,6 +71,14 @@ const NavBar = () => {
     dispatch(removeLocalUser());
     navigate("/");
   };
+
+  const handleCoupons = (e) => {
+    e.preventDefault();
+    dispatch(fetchAllCoupons());
+  };
+  if (allCoupons) {
+    allCoupons;
+  }
   return (
     <Box as="section">
       <Box boxShadow="sm">
@@ -65,9 +93,54 @@ const NavBar = () => {
               <Image src={e} w="40px" alt="Logo" rounded="lg" />
             </Link>
             {userDetails.admin ? (
-              <Button colorScheme="red" onClick={handleSignOut}>
-                Sign Out
-              </Button>
+              <Text fontSize="2xl" fontWeight="bold">
+                Welcome Admin
+              </Text>
+            ) : (
+              " "
+            )}
+            {userDetails.admin ? (
+              <Flex gap="10px">
+                <Popover>
+                  <Button onClick={handleCoupons}>
+                    <PopoverTrigger>
+                      <Button>Coupons</Button>
+                    </PopoverTrigger>
+                  </Button>
+                  <PopoverContent>
+                    {allCoupons.code ? (
+                      <>
+                        <PopoverHeader fontWeight="semibold">
+                          Coupons
+                        </PopoverHeader>
+                        <PopoverArrow />
+                        <PopoverCloseButton />
+                        <TableContainer>
+                          <Table variant="simple">
+                            <Thead>
+                              <Tr>
+                                <Th>Percentage</Th>
+                                <Th>Code</Th>
+                              </Tr>
+                            </Thead>
+                            <Tbody>
+                              <Tr>
+                                <Td>{allCoupons.name}</Td>
+                                <Td>{allCoupons.code}</Td>
+                              </Tr>
+                            </Tbody>
+                          </Table>
+                        </TableContainer>
+                      </>
+                    ) : (
+                      <Text>Loading</Text>
+                    )}
+                  </PopoverContent>
+                </Popover>
+                <Button colorScheme="red" onClick={handleSignOut}>
+                  Sign Out
+                </Button>
+              </Flex>
             ) : (
               <HStack spacing="3">
                 <Link to="/">
@@ -117,7 +190,6 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [show, setShow] = useState(false);
-  // const [close, setClose] = useState(onClose);
 
   const userDetails = useSelector(getUser);
   const status = useSelector(getUserStatus);
@@ -125,13 +197,8 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // console.log({ status });
-
   useEffect(() => {
-    console.log(userDetails);
     if (userDetails.admin) {
-      // console.log("Goooooooooooing ==========>");
-      // setClose(true);
       onClose();
       navigate("/admin");
     }
@@ -144,7 +211,7 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(username, password);
+    username, password;
 
     if ((username, password)) {
       let payload = {
