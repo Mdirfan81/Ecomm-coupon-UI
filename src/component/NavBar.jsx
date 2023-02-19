@@ -200,9 +200,11 @@ function DrawerExample({ isOpen, onOpen, onClose, btnRef }) {
   useEffect(() => {
     if (userDetails.admin) {
       onClose();
+      // sessionStorage.setItem("isAdmin", true);
       navigate("/admin");
     }
   }, [status, userDetails]);
+
   const handleClick = (e) => {
     e.preventDefault();
     setShow(!show);

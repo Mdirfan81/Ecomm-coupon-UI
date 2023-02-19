@@ -18,6 +18,8 @@ import {
   Wrap,
   WrapItem,
 } from "@chakra-ui/react";
+import { getUser, removeLocalUser } from "./features/user/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [totalAmountState, setTotalAmountState] = useState(0);
@@ -25,17 +27,26 @@ const AdminPage = () => {
   const [totalDiscountAmount, setTotalDiscountAmount] = useState(0);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const adminData = useSelector(getSoldItemDetails);
-  if (adminData) {
-    ({ adminData });
-  }
+  const userDetails = useSelector(getUser);
+
   useEffect(() => {
     dispatch(placeOrderDetails());
+    console.log("HERE");
   }, []);
 
   useEffect(() => {
     calculater();
   }, [adminData]);
+
+  useEffect(() => {
+    console.log(userDetails?.admin);
+    if (userDetails?.admin === undefined) {
+      console.log("False =========>", userDetails);
+      navigate("/");
+    }
+  }, [userDetails]);
 
   const calculater = () => {
     let totalAmount = 0;
@@ -138,7 +149,7 @@ const AdminPage = () => {
                   ))
                 )
               ) : (
-                <h1>Loading</h1>
+                <h1>No Data Found</h1>
               )}
             </Wrap>
           </Flex>
@@ -165,4 +176,5 @@ const Details = ({ title, data }) => {
     </Box>
   );
 };
+
 export default AdminPage;

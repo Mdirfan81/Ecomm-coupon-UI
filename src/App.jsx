@@ -9,7 +9,11 @@ import HomePage from "./HomePage";
 import ErrorBoundary from "./component/ErrorBoundary";
 import CheckoutPage from "./component/CheckoutPage";
 import AdminPage from "./AdminPage";
+import ProtectedRoute from "./component/ProtectedRoute";
 function App() {
+  useEffect(() => {
+    sessionStorage.clear();
+  }, []);
   return (
     <React.Fragment>
       <Provider store={store}>
