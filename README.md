@@ -1,6 +1,11 @@
 # Creating a E-commerse website
 
 # steps to run 
-## 1. clone this repo
-## 2. npm i
-## 3. npm start
+ 1. clone this repo
+ 2. npm i
+ 3. npm start
+
+
+# Login as Admin
+username = admin  
+password = test
